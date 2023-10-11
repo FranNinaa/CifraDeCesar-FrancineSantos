@@ -104,8 +104,8 @@
   
   
   /* estilo da opção radio button genero*/
-  #radioFem,
-  #radioMasc {
+  #radioCifrado,
+  #radioDecifrado{
     display: none;
   }
   input[type="radio"]+label {
