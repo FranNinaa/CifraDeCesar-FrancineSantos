@@ -9,43 +9,46 @@
     <link rel="icon" href="../Image/cifra-de-cesar.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <h1></h1>
     </header>
-
+<!-- - Desenvolva um programa que permita a entrada de um texto em um < textarea>. 
+- Abaixo do textarea deve haver 2 radio buttons para permitir que o usuário escolha entre texto cifrado e decifrado.
+- Ao lado dos radio buttons deve haver um campo input que permita ao usuário que informe a cifra. 
+- A cifra tem apenas 1 digito e pode ser numérica ou alfabética. Caso o usuário informe um caractere alfabético,
+ a cifra será a posição do respectivo caractere dentro do alfabeto, por exemplo, "a" = 1, "b" = 2, "c" = 3 e assim por diante.  -->
+ 
     <main>
         <form>
             <fieldset class="borda">
                 <legend class="borda">Cifra de César</legend>
                 <br>
-                <label for="CifraDeCesar"></label>
+                  <label for="textoInput">Insira o texto:</label>
                 <br>
-                <span id="pergunta"></span>
+                   <textarea id="textoInput" rows="4" cols="50"></textarea>
                 <br><br><br>
-                <div>
-                    <label for="respostaInput"></label>
-                    <input type="text" id="" placeholder="">
-                </div>
-
-         <!-------- radio button escolha entre texto cifrado e decifrado -------------->
-                <label for="Genero" class="etiqueta"></label>
-                <input type="radio" id="radioCifrado" name="radio" value="cifrado">
-                <label for="radioCifrado">Cifrado</label><br>
-                <input type="radio" id="radioDecifrado" name="radio" value="decifrado">
+            
+                <label for="radioCifrado">Escolha a opção desejada...</label>
+                <br>
+                    <input type="radio" id="radioCifrado" name="radio" value="cifrado">
+                    <label for="radioCifrado">Cifrado</label><br>
+                    <input type="radio" id="radioDecifrado" name="radio" value="decifrado">
                 <label for="radioDecifrado">Decifrado</label><br><br>
-
-                 <!-------- botão -------------->
-                <section>
-                    <input type="button" value="Executar" >
-                </section>
+            
+                <label for="cifraInput">Informe a cifra:</label>
+                   <input type="text" id="cifraInput">
                 <br><br>
-
+            
+                <input type="button" value="Executar" id="idExecutarButton">
+                <br><br>
+            
                 <div>
-                    <label for="idSaida">Resultados:</label><br>
-                    <ol id="resultados"></ol>
+                    <label for="idSaida">Resultado:</label><br>
+                    <span id="resultado"></span>
                 </div>
-
+            
                 <br>
             </fieldset>
         </form>
@@ -54,8 +57,67 @@
     <footer>
         <p>&copy; 2023 - Estudos Entra21.<br>Autora: Francine dos Santos.</p>
     </footer>
-    <script>
 
+    <script>
+        // Adiciona um event listener ao botão de executar a cifra
+        document.getElementById("idExecutarButton").addEventListener("click", executarCifra);
+
+        function executarCifra() {
+               // Obtém o texto inserido pelo usuário
+            const texto = document.getElementById("textoInput").value;
+
+             // Obtém a cifra inserida pelo usuário
+            const cifraInput = document.getElementById("cifraInput").value;
+
+                // Converte a cifra para um valor numérico usando a função obterCifra
+            const cifra = obterCifra(cifraInput);
+
+                // Obtém o tipo de operação selecionado pelo usuário (cifrado ou decifrado)
+            const tipoOperacao = document.querySelector('input[name="radio"]:checked').value;
+
+            let resultado = "";
+
+            if (tipoOperacao === "cifrado") {
+                // Se o usuário escolheu cifrar, chama a função cifrar para cifrar o texto
+                resultado = cifrar(texto, cifra);
+              // Se o usuário escolheu decifrar, chama a função decifrar para decifrar o texto
+            } else {
+                resultado = decifrar(texto, cifra);
+            }
+            // Atualiza o elemento HTML para exibir o resultado da operação
+            document.getElementById("resultado").innerText = resultado;
+        }
+
+        function obterCifra(cifraInput) {
+            // Verifica se a cifra é numérica
+            if (!isNaN(cifraInput) && cifraInput !== "") {
+                return parseInt(cifraInput) % 26;
+            }
+
+            // Se não é numérica, assume que é uma letra e retorna a posição dela no alfabeto
+            return cifraInput.toLowerCase().charCodeAt(0) - 96;
+        }
+
+        function cifrar(texto, cifra) {
+                // Cifra o texto deslocando os caracteres de acordo com a cifra informada
+            return texto
+                .split('')
+                .map(char => {
+                    if (char.match(/[a-zA-Z]/)) {
+                        const isUpperCase = char === char.toUpperCase();
+                        char = String.fromCharCode(((char.charCodeAt(0) - (isUpperCase ? 65 : 97) + cifra) % 26) + (isUpperCase ? 65 : 97));
+                    }
+                    return char;
+                })
+                .join('');
+        }
+
+        function decifrar(texto, cifra) {
+                // Decifra o texto deslocando os caracteres de acordo com a cifra informada
+            const novaCifra = 26 - cifra;
+            return cifrar(texto, novaCifra);
+        }
     </script>
 </body>
+
 </html>
