@@ -95,7 +95,7 @@
             }
 
             // Se não é numérica, assume que é uma letra e retorna a posição dela no alfabeto
-            return cifraInput.toLowerCase().charCodeAt(0) - 96;
+            return cifraInput.toLowerCase().charCodeAt(0) - 97;
         }
 
         function cifrar(texto, cifra) {
@@ -105,7 +105,7 @@
                 .map(char => {
                     if (char.match(/[a-zA-Z]/)) {
                         const isUpperCase = char === char.toUpperCase();
-                        char = String.fromCharCode(((char.charCodeAt(0) - (isUpperCase ? 65 : 97) + cifra) % 26) + (isUpperCase ? 65 : 97));
+                        char = String.fromCharCode(((char.charCodeAt(0) - (isUpperCase ? 65 : 97) + cifra + 26) % 26) + (isUpperCase ? 65 : 97));
                     }
                     return char;
                 })
